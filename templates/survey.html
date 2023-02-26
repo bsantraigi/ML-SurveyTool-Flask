@@ -1,8 +1,6 @@
-<head>
-	<title>Survey</title>
-</head>
-<body>
+{% extends "layout.html" %}
+
+{% block content %}
 	<h1>Survey</h1>
-	<p>Survey</p>
-	<a href="/">Home</a>
-</body>
+	<a href="{{ url_for('index') }}">Go back to Home</a>
+{% endblock content %}
