@@ -1,6 +1,41 @@
 {% extends "layout.html" %}
 
 {% block content %}
-	<h1>Survey</h1>
 	<a href="{{ url_for('index') }}">Go back to Home</a>
+	<div class="content-section">
+		<form class="border p-3" method="POST" action="">
+			{{ form.hidden_tag() }}
+			<fieldset>
+				<legend class="border-bottom p-3">Answer the questions below</legend>
+				<div class="form-group border-bottom p-3">
+					{{ form.q1.label(class="form-control-label") }}
+					{{ form.q1(class="form-control form-control-sm") }}
+					<small id="help_q1" class="form-text text-muted">
+						🛈 {{ form.q1.description }}
+					</small>
+				</div>
+				<div class="form-group border-bottom p-3">
+					{{ form.q2.label(class="form-control-label") }}
+					{{ form.q2(class="custom-select custom-select-sm") }}
+					<small id="help_q2" class="form-text text-muted">
+						🛈 {{ form.q2.description }}
+					</small>
+				</div>
+				<div class="form-group border-bottom p-3">
+					{{ form.q3.label(class="form-control-label") }}
+					{{ form.q3(class="custom-select custom-select-sm") }}
+					<small id="help_q3" class="form-text text-muted">
+						🛈 {{ form.q3.description }}
+					</small>
+				</div>
+				<div class="form-group border-bottom p-3">
+					{{ form.q4.label(class="form-control-label") }}
+					{{ form.q4(class="custom-select custom-select-sm") }}
+					<small id="help_q4" class="form-text text-muted">
+						🛈 {{ form.q4.description }}
+					</small>
+				</div>
+			</fieldset>
+		</form>
+	</div>
 {% endblock content %}

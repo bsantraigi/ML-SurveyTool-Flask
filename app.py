@@ -14,6 +14,6 @@ def index():
 def survey():
     # Show a form with the fields from SurveyForm
     form = SurveyForm()
-    return render_template('survey.html', title='Survey')
+    return render_template('survey.html', title='Survey', form=form)
 
 app.run(debug=True, host='0.0.0.0', port=20013)
