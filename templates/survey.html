@@ -9,7 +9,7 @@
 				<legend class="border-bottom p-3">Answer the questions below</legend>
 				<div class="form-group border-bottom p-3">
 					{{ form.q1.label(class="form-control-label") }}
-					{{ form.q1(class="form-control form-control-sm") }}
+					{{ form.q1(class="custom-select custom-select-sm") }}
 					<small id="help_q1" class="form-text text-muted">
 						🛈 {{ form.q1.description }}
 					</small>
@@ -30,15 +30,7 @@
 				</div>
 				<div class="form-group border-bottom p-3">
 					{{ form.q4.label(class="form-control-label") }}
-					<!-- show the select field but with first option disabled -->
-					<select name="q4" id="q4" class="custom-select custom-select-sm" required>
-						{% for option in form.q4 %}
-							{% if loop.first %}
-								<option value="" disabled selected>-- please select an answer from this list --</option>
-							{% endif %}
-							{{ option }}
-						{% endfor %}
-					</select>
+					{{ form.q4(class="custom-select custom-select-sm") }}
 					<small id="help_q4" class="form-text text-muted">
 						🛈 {{ form.q4.description }}
 					</small>
