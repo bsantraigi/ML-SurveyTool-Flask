@@ -30,12 +30,23 @@
 				</div>
 				<div class="form-group border-bottom p-3">
 					{{ form.q4.label(class="form-control-label") }}
-					{{ form.q4(class="custom-select custom-select-sm") }}
+					<!-- show the select field but with first option disabled -->
+					<select name="q4" id="q4" class="custom-select custom-select-sm" required>
+						{% for option in form.q4 %}
+							{% if loop.first %}
+								<option value="" disabled selected>-- please select an answer from this list --</option>
+							{% endif %}
+							{{ option }}
+						{% endfor %}
+					</select>
 					<small id="help_q4" class="form-text text-muted">
 						🛈 {{ form.q4.description }}
 					</small>
 				</div>
 			</fieldset>
+			<div class="form-group">
+				{{ form.submit(class="btn btn-outline-info") }}
+			</div>
 		</form>
 	</div>
 {% endblock content %}

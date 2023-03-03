@@ -10,7 +10,7 @@ def index():
     # Show a basic html with a header and a link to /survey
     return render_template('home.html', title="Home")
 
-@app.route('/survey')
+@app.route('/survey', methods=['GET', 'POST'])
 def survey():
     # Show a form with the fields from SurveyForm
     form = SurveyForm()
