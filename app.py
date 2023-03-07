@@ -1,4 +1,6 @@
 from datetime import datetime
+import random
+import json
 from flask import Flask
 from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -15,17 +17,17 @@ class User(db.Model):
     prolific_id = db.Column(db.String(20), unique=True, nullable=False)
     ref_url = db.Column(db.String(100), nullable=False)
     date_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    submissions = db.relationship('Submissions', backref='user', lazy=True)
+    submissions = db.relationship('Submission', backref='user', lazy=True)
 
     def __repr__(self):
         return f"User('{self.prolific_id}', '{self.ref_url}')"
 
 
-class Questions(db.Model):
+class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # Main fields from our dataset
     sample_id = db.Column(db.Integer, nullable=False)
-    context = db.Column(db.Text, nullable=False)
+    context = db.Column(db.JSON, nullable=False)
     response_a = db.Column(db.Text, nullable=False)
     response_b = db.Column(db.Text, nullable=False)
     response_a_src = db.Column(db.String(100), nullable=False)
@@ -33,13 +35,13 @@ class Questions(db.Model):
     # To track question versions
     date_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     is_active = db.Column(db.Boolean, nullable=False)
-    submissions = db.relationship('Submissions', backref='question', lazy=True)
+    submissions = db.relationship('Submission', backref='question', lazy=True)
 
     def __repr__(self):
-        return f"Questions('{self.sample_id}', '{self.response}', '{self.date_added}', '{self.is_active}')"
+        return f"Question('sid:{self.sample_id}', '{self.response_a_src}' vs. '{self.response_b_src}', '{self.date_added}', active:'{self.is_active}')"
 
 
-class Submissions(db.Model):
+class Submission(db.Model):
     """
     This table will store the submissions from the survey. One row corresponds to each question
     submitted by an user.
@@ -48,7 +50,7 @@ class Submissions(db.Model):
     date_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     submission_json = db.Column(db.JSON, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    question_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
 
     def __repr__(self):
         return f"Submissions('{self.user_id}', '{self.question_id}', '{self.response}', '{self.date_added}')"
@@ -63,7 +65,10 @@ def index():
 def survey():
     # Show a form with the fields from SurveyForm
     form = SurveyForm()
-    return render_template('survey.html', title='Survey', form=form)
+    questions = Question.query.filter_by(is_active=True).all()
+    question = questions[random.randint(0, len(questions)-1)]
+    question.context = json.loads(question.context)
+    return render_template('survey.html', title='Survey', form=form, question=question)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=20013)

@@ -3,6 +3,37 @@
 {% block content %}
 	<a href="{{ url_for('index') }}">Go back to Home</a>
 	<div class="content-section">
+		<span class="badge badge-info">Chat History</span>
+		<!-- chat history: loop through and print utterances from question.context -->
+		{% for utterance in question.context %}
+			<div class="row">
+				<div class="col-md-6 border-bottom p-3">
+					<p>
+						{{ utterance }}
+					</p>
+				</div>
+			</div>
+		{% endfor %}
+
+		<small id="question">
+			{{ question.context }}
+		</small>
+		<!-- response from System 1 and 2 in side-by-side columns -->
+		<div class="row">
+			<div class="col-md-6 border-bottom p-3">
+				<h4>System 1 Response</h3>
+				<p>
+					{{ question.response_a }}
+				</p>
+			</div>
+			<div class="col-md-6 border-bottom p-3">
+				<h4>System 2 Response</h3>
+				<p>
+					{{ question.response_b }}
+				</p>
+			</div>
+		</div>
+
 		<form class="border p-3" method="POST" action="">
 			{{ form.hidden_tag() }}
 			<fieldset>
