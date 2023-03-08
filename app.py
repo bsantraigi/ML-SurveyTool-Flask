@@ -67,6 +67,8 @@ def survey():
     form = SurveyForm()
     questions = Question.query.filter_by(is_active=True).all()
     question = questions[random.randint(0, len(questions)-1)]
+    print("Context: ")
+    print(question.context)
     question.context = json.loads(question.context)
     return render_template('survey.html', title='Survey', form=form, question=question)
 
