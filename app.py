@@ -1,10 +1,11 @@
 from datetime import datetime
 import random
 import json
+from flask import request
 from flask import Flask
 from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
-from forms import SurveyForm
+from forms import SurveyForm, LoginForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'c60ab121a433e814649e0640e73c1f2f'
@@ -14,13 +15,13 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    prolific_id = db.Column(db.String(20), unique=True, nullable=False)
+    prolific_pid = db.Column(db.String(20), unique=True, nullable=False)
     ref_url = db.Column(db.String(100), nullable=False)
     date_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     submissions = db.relationship('Submission', backref='user', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.prolific_id}', '{self.ref_url}')"
+        return f"User('{self.prolific_pid}', '{self.ref_url}')"
 
 
 class Question(db.Model):
@@ -56,10 +57,34 @@ class Submission(db.Model):
         return f"Submissions('{self.user_id}', '{self.question_id}', '{self.response}', '{self.date_added}')"
 
 
-@app.route('/')
-def index():
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
+def home():
+    # Check if there's any get parameters
+    if request.args:
+        print(request.args)
+        prolific_pid = request.args.get('PROLIFIC_PID')
+        session_id = request.args.get('SESSION_ID')
+        study_id = request.args.get('STUDY_ID')
+        url_args = {
+            'PROLIFIC_PID': prolific_pid,
+            'SESSION_ID': session_id,
+            'STUDY_ID': study_id
+        }
+    else:
+        url_args = {}
+
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        # Create user if it doesn't exist
+        user = User.query.filter_by(prolific_pid=login_form.prolific_pid.data).first()
+        if user is None:
+            user = User(prolific_pid=login_form.prolific_pid.data, ref_url="test")
+            db.session.add(user)
+            db.session.commit()
+
     # Show a basic html with a header and a link to /survey
-    return render_template('home.html', title="Home")
+    return render_template('home.html', title="Home", login_form=login_form, url_args=url_args)
 
 @app.route('/survey', methods=['GET', 'POST'])
 def survey():

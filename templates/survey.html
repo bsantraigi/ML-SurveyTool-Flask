@@ -1,13 +1,12 @@
 {% extends "layout.html" %}
 
 {% block content %}
-	<a href="{{ url_for('index') }}">Go back to Home</a>
-	<div class="content-section">
-		<span class="badge badge-info">Chat History</span>
+	<div class="content-section border p-3 m-3">
+		<h3>Chat History</h3>
 		<!-- chat history: loop through and print utterances from question.context -->
 		{% for utterance in question.context %}
 			<div class="row">
-				<div class="col-md-6 border-bottom p-3">
+				<div class="col-md-6 small">
 					<p>
 						{{ utterance }}
 					</p>
@@ -17,51 +16,90 @@
 
 		<!-- response from System 1 and 2 in side-by-side columns -->
 		<div class="row">
-			<div class="col-md-6 border-bottom p-3">
+			<div class="col-md-6 border-right p-3">
 				<h4>System 1 Response</h3>
-				<p>
-					{{ question.response_a }}
-				</p>
+				<p class="small"> {{ question.response_a }} </p>
 			</div>
-			<div class="col-md-6 border-bottom p-3">
+			<div class="col-md-6 p-3">
 				<h4>System 2 Response</h3>
-				<p>
-					{{ question.response_b }}
-				</p>
+				<span class="small"> {{ question.response_b }} </span>
 			</div>
 		</div>
 
-		<form class="border p-3" method="POST" action="">
+
+		<!-- two div columns side by side -->
+
+
+
+		<!-- form to submit user's response -->
+
+		<form class="border p-3 m-3" method="POST" action="">
 			{{ form.hidden_tag() }}
 			<fieldset>
-				<legend class="border-bottom p-3">Answer the questions below</legend>
-				<div class="form-group border-bottom p-3">
-					{{ form.q1.label(class="form-control-label") }}
-					{{ form.q1(class="custom-select custom-select-sm") }}
-					<small id="help_q1" class="form-text text-muted">
-						🛈 {{ form.q1.description }}
-					</small>
-				</div>
-				<div class="form-group border-bottom p-3">
-					{{ form.q2.label(class="form-control-label") }}
-					{{ form.q2(class="custom-select custom-select-sm") }}
-					<small id="help_q2" class="form-text text-muted">
-						🛈 {{ form.q2.description }}
-					</small>
-				</div>
-				<div class="form-group border-bottom p-3">
-					{{ form.q3.label(class="form-control-label") }}
-					{{ form.q3(class="custom-select custom-select-sm") }}
-					<small id="help_q3" class="form-text text-muted">
-						🛈 {{ form.q3.description }}
-					</small>
-				</div>
-				<div class="form-group border-bottom p-3">
-					{{ form.q4.label(class="form-control-label") }}
-					{{ form.q4(class="custom-select custom-select-sm") }}
-					<small id="help_q4" class="form-text text-muted">
-						🛈 {{ form.q4.description }}
-					</small>
+				<div class="row">
+					<div class="col-md-6 border-right p-3">
+						<h4 class="border-bottom pb-3 mb-3">Answer the questions below</h4>
+						<div class="form-group">
+							{{ form.q1.label(class="form-control-label small") }}
+							{{ form.q1(class="custom-select custom-select-sm") }}
+							<small id="help_q1" class="form-text text-muted">
+								🛈 {{ form.q1.description }}
+							</small>
+						</div>
+						<div class="form-group">
+							{{ form.q2.label(class="form-control-label small") }}
+							{{ form.q2(class="custom-select custom-select-sm") }}
+							<small id="help_q2" class="form-text text-muted">
+								🛈 {{ form.q2.description }}
+							</small>
+						</div>
+						<div class="form-group">
+							{{ form.q3.label(class="form-control-label small") }}
+							{{ form.q3(class="custom-select custom-select-sm") }}
+							<small id="help_q3" class="form-text text-muted">
+								🛈 {{ form.q3.description }}
+							</small>
+						</div>
+						<div class="form-group">
+							{{ form.q4.label(class="form-control-label small") }}
+							{{ form.q4(class="custom-select custom-select-sm") }}
+							<small id="help_q4" class="form-text text-muted">
+								🛈 {{ form.q4.description }}
+							</small>
+						</div>
+					</div>
+					<!-- second column -->
+					<div class="col-md-6 p-3">
+						<h4 class="border-bottom pb-3 mb-3">Answer the questions below</h4>
+						<div class="form-group">
+							{{ form.q1.label(class="form-control-label small") }}
+							{{ form.q1(class="custom-select custom-select-sm") }}
+							<small id="help_q1" class="form-text text-muted">
+								🛈 {{ form.q1.description }}
+							</small>
+						</div>
+						<div class="form-group">
+							{{ form.q2.label(class="form-control-label small") }}
+							{{ form.q2(class="custom-select custom-select-sm") }}
+							<small id="help_q2" class="form-text text-muted">
+								🛈 {{ form.q2.description }}
+							</small>
+						</div>
+						<div class="form-group">
+							{{ form.q3.label(class="form-control-label small") }}
+							{{ form.q3(class="custom-select custom-select-sm") }}
+							<small id="help_q3" class="form-text text-muted">
+								🛈 {{ form.q3.description }}
+							</small>
+						</div>
+						<div class="form-group">
+							{{ form.q4.label(class="form-control-label small") }}
+							{{ form.q4(class="custom-select custom-select-sm") }}
+							<small id="help_q4" class="form-text text-muted">
+								🛈 {{ form.q4.description }}
+							</small>
+						</div>
+					</div>
 				</div>
 			</fieldset>
 			<div class="form-group">

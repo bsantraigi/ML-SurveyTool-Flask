@@ -34,6 +34,13 @@ class SelectFieldWithDisabledFirstChoice(SelectField):
 #         self.choices = [('', 'Select an option')] + self.choices
 
 
+class LoginForm(FlaskForm):
+    prolific_pid = StringField('Prolific PID', validators=[DataRequired()])
+    study_id = StringField('Study ID', validators=[DataRequired()])
+    session_id = StringField('Session ID', validators=[DataRequired()])
+    submit = SubmitField('Login')
+
+
 class SurveyForm(FlaskForm):
     eng_label = Markup('<strong>Engagingness:</strong> Given the context, is the model-generated response <em>engaging</em>?')
     rel_label = Markup('<strong>Relevance:</strong> Given the context, is the model-generated response <em>relevant</em>?')

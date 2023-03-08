@@ -3,5 +3,36 @@
 {% block content %}
     <h1>Home</h1>
     <p>Welcome to Dialog Survey! Login Below.</p>
-    <a href="{{ url_for('survey') }}">Go to Survey</a>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form action="{{ url_for('home') }}" method="post">
+                {{ login_form.hidden_tag() }}
+                <fieldset>
+                    <legend class="border-bottom">Answer the questions below</legend>
+                    <div class="form-group">
+                        {{ login_form.prolific_pid.label(class="form-control-label") }}
+                        {{ login_form.prolific_pid(class="form-control", value=url_args.PROLIFIC_PID) }}
+                    </div>
+                    <div class="form-group">
+                        {{ login_form.study_id.label(class="form-control-label") }}
+                        {{ login_form.study_id(class="form-control", value=url_args.STUDY_ID) }}
+                    </div>
+                    <div class="form-group">
+                        {{ login_form.session_id.label(class="form-control-label") }}
+                        {{ login_form.session_id(class="form-control", value=url_args.SESSION_ID) }}
+                    </div>
+                    <div class="form-group">
+                        {{ login_form.submit(class="btn btn-outline-info") }}
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+
+      
+
+
 {% endblock content %}
