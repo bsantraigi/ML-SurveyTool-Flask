@@ -4,10 +4,16 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Dashboard</h1>
-                <p>Welcome to the dashboard</p>
-                <a href="{{ url_for('logout') }}">Logout</a>
+                <h4>Dashboard</h4>
+                <p>Welcome User({{ user_info.prolific_pid }}) to the dashboard</p>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Survey Results</h4>
+                <p>Here are the results of the survey</p>
+                <p>You have completed {{ submission_progress.submitted }} surveys out of {{ submission_progress.total }}</p>
+            </div>
+
     </div>
 {% endblock %}

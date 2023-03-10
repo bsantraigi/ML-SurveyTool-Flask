@@ -58,6 +58,7 @@ class Submission(db.Model):
     submission_json = db.Column(db.JSON, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
+    is_submitted = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):
         return f"Submissions('{self.user_id}', '{self.question_id}', '{self.response}', '{self.date_added}')"
@@ -90,6 +91,12 @@ def login():
             user = User(prolific_pid=login_form.prolific_pid.data, ref_url="test")
             db.session.add(user)
             db.session.commit()
+            # Create entries for submissions
+            questions = Question.query.filter_by(is_active=True).all()
+            for q in questions:
+                submission = Submission(user_id=user.id, question_id=q.id, submission_json={}, is_submitted=False)
+                db.session.add(submission)
+            db.session.commit()
             flash(f'Account created for {login_form.prolific_pid.data}!', 'success')
         else:
             flash(f'Logging in with existing account for {login_form.prolific_pid.data}!', 'success')
@@ -104,8 +111,23 @@ def login():
 def dashboard():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
+
+    # User info and submissions
+    user = User.query.filter_by(prolific_pid=current_user.prolific_pid).first()
+    user_info = {
+        'prolific_pid': user.prolific_pid,
+        'ref_url': user.ref_url,
+        'date_added': user.date_added
+    }
+    # Submission progress
+    submissions = Submission.query.filter_by(user_id=user.id).all()
+    submission_progress = {
+        'total': len(submissions),
+        'submitted': len([s for s in submissions if s.is_submitted])
+    }
+
     # Show a basic html with a header and a link to /survey
-    return render_template('dashboard.html', title="Dashboard")
+    return render_template('dashboard.html', title="Dashboard", user_info=user_info, submission_progress=submission_progress)
 
 
 @app.route('/survey', methods=['GET', 'POST'])
