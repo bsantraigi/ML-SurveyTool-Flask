@@ -38,6 +38,7 @@ class LoginForm(FlaskForm):
     prolific_pid = StringField('Prolific PID', validators=[DataRequired()])
     study_id = StringField('Study ID', validators=[DataRequired()])
     session_id = StringField('Session ID', validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
 

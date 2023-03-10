@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1>Home</h1>
+    <h1>Login</h1>
     <p>Welcome to Dialog Survey! Login Below.</p>
 
     <div class="row">
         <div class="col-md-6">
-            <form action="{{ url_for('home') }}" method="post">
+            <form action="{{ url_for('login') }}" method="post">
                 {{ login_form.hidden_tag() }}
                 <fieldset>
                     <legend class="border-bottom">Answer the questions below</legend>
@@ -21,6 +21,10 @@
                     <div class="form-group">
                         {{ login_form.session_id.label(class="form-control-label") }}
                         {{ login_form.session_id(class="form-control", value=url_args.SESSION_ID) }}
+                    </div>
+                    <div class="form-group form-check">
+                        {{ login_form.remember_me(class="form-check-input") }}
+                        {{ login_form.remember_me.label(class="form-check-label") }}
                     </div>
                     <div class="form-group">
                         {{ login_form.submit(class="btn btn-outline-info") }}

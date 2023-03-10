@@ -1,19 +1,25 @@
 from datetime import datetime
 import random
 import json
-from flask import request
+from flask import request, flash, redirect, url_for
 from flask import Flask
 from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
 from forms import SurveyForm, LoginForm
+from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user, login_required
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'c60ab121a433e814649e0640e73c1f2f'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+login_manager = LoginManager(app)
 
 db = SQLAlchemy(app)
 
-class User(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     prolific_pid = db.Column(db.String(20), unique=True, nullable=False)
     ref_url = db.Column(db.String(100), nullable=False)
@@ -58,8 +64,10 @@ class Submission(db.Model):
 
 
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/home', methods=['GET', 'POST'])
-def home():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     # Check if there's any get parameters
     if request.args:
         print(request.args)
@@ -82,12 +90,28 @@ def home():
             user = User(prolific_pid=login_form.prolific_pid.data, ref_url="test")
             db.session.add(user)
             db.session.commit()
+            flash(f'Account created for {login_form.prolific_pid.data}!', 'success')
+        else:
+            flash(f'Logging in with existing account for {login_form.prolific_pid.data}!', 'success')
+        login_user(user, remember=login_form.remember_me.data)
+        return redirect(url_for('dashboard'))
 
     # Show a basic html with a header and a link to /survey
-    return render_template('home.html', title="Home", login_form=login_form, url_args=url_args)
+    return render_template('login.html', title="Login", login_form=login_form, url_args=url_args)
+
+
+@app.route('/dashboard')
+def dashboard():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    # Show a basic html with a header and a link to /survey
+    return render_template('dashboard.html', title="Dashboard")
+
 
 @app.route('/survey', methods=['GET', 'POST'])
 def survey():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
     # Show a form with the fields from SurveyForm
     form = SurveyForm()
     questions = Question.query.filter_by(is_active=True).all()
@@ -96,6 +120,11 @@ def survey():
     print(question.context)
     question.context = json.loads(question.context)
     return render_template('survey.html', title='Survey', form=form, question=question)
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=20013)
