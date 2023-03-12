@@ -4,11 +4,11 @@
 	<div class="content-section border p-3">
 		<h3>Chat History</h3>
 		<!-- chat history: loop through and print utterances from question.context -->
-		{% for utterance in question.context %}
+		{% for utterance, speaker in question.context %}
 			<div class="row">
 				<div class="col-md-6 small">
 					<p>
-						{{ utterance }}
+						{{ speaker }}: {{ utterance }}
 					</p>
 				</div>
 			</div>

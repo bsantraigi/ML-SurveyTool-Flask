@@ -140,7 +140,10 @@ def survey():
     question = questions[random.randint(0, len(questions)-1)]
     print("Context: ")
     print(question.context)
-    question.context = json.loads(question.context)
+    question.context = json.loads(question.context)[-6:] # At max 6 utts
+    speakers = ['Agent', 'User']*len(question.context)
+    speakers = speakers[-len(question.context):]
+    question.context = list(zip(question.context, speakers))
     return render_template('survey.html', title='Survey', form=form, question=question)
 
 @app.route('/logout')
