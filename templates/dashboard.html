@@ -1,19 +1,13 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h4>Dashboard</h4>
-                <p>Welcome User({{ user_info.prolific_pid }}) to the dashboard</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h4>Survey Results</h4>
-                <p>Here are the results of the survey</p>
-                <p>You have completed {{ submission_progress.submitted }} surveys out of {{ submission_progress.total }}</p>
-            </div>
 
+<article class="media content-section">
+    <div class="media-body">
+        <h4>Dashboard</h4>
+        <p>Welcome User({{ user_info.prolific_pid }}) to the dashboard</p>
+        <h4>Survey Results</h4>
+        <p>You have completed {{ submission_progress.submitted }} surveys out of {{ submission_progress.total }}</p>
     </div>
+</article>
 {% endblock %}
