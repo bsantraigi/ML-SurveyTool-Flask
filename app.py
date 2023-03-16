@@ -136,6 +136,16 @@ def survey():
         return redirect(url_for('login'))
     # Show a form with the fields from SurveyForm
     form = SurveyForm()
+    if form.validate_on_submit():
+        # Print the form data to the console
+        print(form.data)
+        # Save the form data to the database
+        submission = Submission.query.filter_by(user_id=current_user.id, question_id=form.question_id.data).first()
+        submission.submission_json = form.data
+        submission.is_submitted = True
+        # db.session.commit()
+        flash(f'Submission saved!', 'success')
+
     questions = Question.query.filter_by(is_active=True).all()
     question = questions[random.randint(0, len(questions)-1)]
     print("Context: ")

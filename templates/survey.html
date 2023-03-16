@@ -99,6 +99,10 @@
 								🛈 {{ form.q4.description }}
 							</small>
 						</div>
+						<div class="form-group">
+							{{ form.hidden_timestamp_start }}
+							{{ form.hidden_timestamp_end }}
+						</div>
 					</div>
 				</div>
 			</fieldset>
@@ -108,3 +112,23 @@
 		</form>
 	</div>
 {% endblock content %}
+
+<script>
+	// get the current time and store it in the hidden_time_start field
+	// when the page loads
+	window.onload = function() {
+		var time_start = new Date().getTime();
+		document.getElementById("hidden_time_start").value = time_start;
+	};
+
+	// get the current time and store it in the hidden_time_end field
+	// when the form is submitted
+	function submitForm() {
+		var time_end = new Date().getTime();
+		document.getElementById("hidden_time_end").value = time_end;
+	}
+
+	// add the submitForm function to the form's onsubmit event
+	document.getElementById("form").onsubmit = submitForm;
+</script>
+

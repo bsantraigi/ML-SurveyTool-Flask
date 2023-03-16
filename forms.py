@@ -48,23 +48,37 @@ class SurveyForm(FlaskForm):
     flu_label = Markup('<strong>Fluency:</strong> Given the context, is the model-generated response <em>fluent</em>?')
     coh_label = Markup('<strong>Coherence:</strong> Given the context, is the model-generated response <em>coherent</em>?')
     q1 = SelectFieldWithDisabledFirstChoice(eng_label, 
-                    choices=[(-1, "-- please select an answer from this list --"), (0, 'No'), (1, 'Somewhat'), (2, 'Yes')], 
+                    choices=[(-1, "-- please select an answer from this list --"), 
+                             (0, 'No (ends conversation, irrelevant, or not engaging)'),
+                             (1, 'Somewhat (not engaging, but relevant and/or continues conversation)'), 
+                             (2, 'Yes (engaging, relevant, and continues conversation)')],
                     description="Engaging: The response can be followed-up on by the user.", 
                     validators=[DataRequired()])
 
     q2 = SelectFieldWithDisabledFirstChoice(rel_label, 
-                     choices=[(-1, "-- please select an answer from this list --"), (0, 'No'), (1, 'Somewhat'), (2, 'Yes')], 
+                     choices=[(-1, "-- please select an answer from this list --"), 
+                              (0, 'No'), 
+                              (1, 'Somewhat'), 
+                              (2, 'Yes')], 
                      description='Relevant: Response is on topic and a valid/reasonable continuation of the conversation.', 
                      validators=[DataRequired()])
 
     q3 = SelectFieldWithDisabledFirstChoice(flu_label, 
-                     choices=[(-1, "-- please select an answer from this list --"), (0, 'No'), (1, 'Somewhat'), (2, 'Yes')], 
+                     choices=[(-1, "-- please select an answer from this list --"), 
+                              (0, 'No'), 
+                              (1, 'Somewhat'), 
+                              (2, 'Yes')], 
                      description='Fluent: Response follows all the rules of English grammar.', 
                      validators=[DataRequired()])
 
     q4 = SelectFieldWithDisabledFirstChoice(coh_label, 
-                     choices=[(-1, "-- please select an answer from this list --"), (0, 'No'), (1, 'Somewhat'), (2, 'Yes')], 
+                     choices=[(-1, "-- please select an answer from this list --"), 
+                              (0, 'No'), 
+                              (1, 'Somewhat'), 
+                              (2, 'Yes')], 
                      description='Coherent: The response is logically connected and easy to understand in the context of the conversation. It presents a clear and organized train of thought.', 
                      validators=[DataRequired()])
+    hidden_timestamp_start = StringField('hidden_timestamp_start', validators=[DataRequired()])
+    hidden_timestamp_end = StringField('hidden_timestamp_end', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
