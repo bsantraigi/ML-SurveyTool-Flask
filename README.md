@@ -20,6 +20,18 @@ pip install -r requirements.txt
 python app.py
 ```
 
+## Setting up db
+
+### SQLITE
+
+Run the db_test.ipynb notebook to create a populate the initial database.
+
+```python
+python
+from app import db
+db.create_all()
+```
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
