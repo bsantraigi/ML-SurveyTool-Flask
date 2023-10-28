@@ -146,6 +146,7 @@ def survey():
         # db.session.commit()
         flash(f'Submission saved!', 'success')
         print("Validation Passed")
+        return redirect('survey')
     else:
         print("Validation Failed")
 
