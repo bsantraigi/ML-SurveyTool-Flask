@@ -145,11 +145,14 @@ def survey():
         submission.is_submitted = True
         # db.session.commit()
         flash(f'Submission saved!', 'success')
+        print("Validation Passed")
+    else:
+        print("Validation Failed")
 
     questions = Question.query.filter_by(is_active=True).all()
     question = questions[random.randint(0, len(questions)-1)]
-    print("Context: ")
-    print(question.context)
+    # print("Context: ")
+    # print(question.context)
     question.context = json.loads(question.context)[-6:] # At max 6 utts
     speakers = ['Agent', 'User']*len(question.context)
     speakers = speakers[-len(question.context):]
