@@ -78,7 +78,7 @@ class SurveyForm(FlaskForm):
                               (2, 'Yes')], 
                      description='Coherent: The response is logically connected and easy to understand in the context of the conversation. It presents a clear and organized train of thought.', 
                      validators=[DataRequired()])
-    hidden_timestamp_start = StringField('hidden_timestamp_start', validators=[DataRequired()])
-    hidden_timestamp_end = StringField('hidden_timestamp_end', validators=[DataRequired()])
+    hidden_timestamp_start = StringField('hidden_timestamp_start', validators=[DataRequired()], default=0)
+    hidden_timestamp_end = StringField('hidden_timestamp_end', validators=[DataRequired()], default=0)
     submit = SubmitField('Submit')
 

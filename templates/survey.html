@@ -35,7 +35,7 @@
 
 		<!-- form to submit user's response -->
 
-		<form class="border p-3 m-3" method="POST" action="">
+		<form id="surveyform" class="border p-3 m-3" method="POST" action="">
 			{{ form.hidden_tag() }}
 			<fieldset>
 				<div class="row">
@@ -115,22 +115,25 @@
 	</div>
 {% endblock content %}
 
-<script>
-	// get the current time and store it in the hidden_time_start field
-	// when the page loads
-	window.onload = function() {
-		var time_start = new Date().getTime();
-		document.getElementById("hidden_time_start").value = time_start;
-	};
+{% block custom_script %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		time_start = new Date().getTime();
+		console.log(time_start);
+		$("#hidden_timestamp_start").val(time_start);
+		// Attach event listener to the form submit button
+		$("#submit").on("click", function(e) {
+			e.preventDefault(); // Prevent the default form submission behavior
 
-	// get the current time and store it in the hidden_time_end field
-	// when the form is submitted
-	function submitForm() {
-		var time_end = new Date().getTime();
-		document.getElementById("hidden_time_end").value = time_end;
-	}
+			// Get the input field values
+			time_end = new Date().getTime();
+			console.log(time_end - time_start);
 
-	// add the submitForm function to the form's onsubmit event
-	document.getElementById("form").onsubmit = submitForm;
+			$("#hidden_timestamp_end").val(time_end);
+
+			// Submit the form programmatically
+			$("#surveyform").submit();
+		});
+  });
 </script>
-
+{% endblock custom_script %}
